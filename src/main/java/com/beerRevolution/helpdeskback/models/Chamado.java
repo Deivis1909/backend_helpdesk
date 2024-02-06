@@ -2,18 +2,28 @@ package com.beerRevolution.helpdeskback.models;
 
 import com.beerRevolution.helpdeskback.enuns.Prioridade;
 import com.beerRevolution.helpdeskback.enuns.Status;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Chamado {
+@Entity
+public class Chamado implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
 
     // now agora , pegadando a adata atual
+    @JsonFormat(pattern="dd/MM/yyyy")
     private LocalDate dataAbertura = LocalDate.now();
 
+    @JsonFormat(pattern="dd/MM/yyyy")
     private LocalDate dataFechamento ;
 
     private Prioridade prioridade;
@@ -26,9 +36,19 @@ public class Chamado {
 
 
     //relacacao entre tabelas com a tabela TECNICO
+
+    // muitos chamados poder ter 1 tecnico
+    // 1 tecnico pode ter muitos chamados
+    @ManyToOne
+    @JoinColumn(name="tecnico_id")// coluna de ligacao
     private Tecnico tecnico;
 
     //RELACAO COM A TABELA CLIENTE
+
+
+    // muitos chamados poder ter 1 cliente
+    @ManyToOne
+    @JoinColumn(name = "cliente_id") //coluna de ligacao
     private Cliente cliente;
 
     public Chamado(Integer id, Prioridade prioridade, Status status, String titulo, String observacoes, Tecnico tecnico, Cliente cliente) {

@@ -1,28 +1,62 @@
 package com.beerRevolution.helpdeskback.models;
 
 import com.beerRevolution.helpdeskback.enuns.Perfil;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public abstract class Pessoa {
+
+@Entity
+public abstract class Pessoa implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     //protected class a classe herdeira tem acesso a essas variaveis
+
+    //@GeneratedValue(strategy = GenerationType.IDENTITY) o banco se responsabiliza por gerar o id
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
     protected String nome;
 
+    @Column(unique = true)
     protected  String cpf;
 
+    @Column(unique = true)
     protected String email;
 
     protected String senha;
 
 
+    //A anotação @ElementCollection em conjunto com os parâmetros fetch = FetchType.EAGER
+    // é usada em um contexto de mapeamento de entidades no framework Spring com o Hibernate,
+    // que é uma implementação de mapeamento objeto-relacional (ORM). E
+
+    //A anotação @ElementCollection é usada para indicar que a coleção (perfils no seu exemplo)
+    // é uma parte INTEGRANTE DA ENTIDADE PROPRIETARIA (a entidade que possui a coleção),
+    // MAS NAO É UMA ENTIDADE POR SI SÓ. Ela é geralmente utilizada para representar coleções
+    // de valores simples,
+    // não-entidades, e é persistida em uma tabela separada pelo Hibernate.
+
+    //O parâmetro fetch = FetchType.EAGER especifica que a coleção perfils deve ser
+    // CARREGADA AUTOMATICAMENTE QUANDO A ENTIDADE PROPRIETARIA FOR CARREGADA.
+    // Isso significa que o Hibernate tentará recuperar todos os elementos da coleção
+    //
+    // imediatamente, otimizando a consulta para incluir esses elementos.
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    // cria uma tabela com name perfils
+    @CollectionTable(name="perfils")
     protected Set<Integer> perfils = new HashSet<>();
 
+    //pattern padrao
+    @JsonFormat(pattern="dd/MM/yyyy")
     protected LocalDate dataCriacao = LocalDate.now();
 
 
