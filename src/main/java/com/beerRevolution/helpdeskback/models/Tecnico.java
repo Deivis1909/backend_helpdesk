@@ -1,6 +1,7 @@
 package com.beerRevolution.helpdeskback.models;
 
 import com.beerRevolution.helpdeskback.enuns.Perfil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 
@@ -11,6 +12,7 @@ import java.util.List;
 public class Tecnico extends Pessoa{
     private static final long serialVersionUID = 1L;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tecnico") // 1 tecnico pode ter muitas chamadas
     private List<Chamado> chamados = new ArrayList<>();
 
