@@ -16,7 +16,7 @@ public class TecnicoService {
     public Tecnico findById(Integer id){
         Optional<Tecnico> optional = tecnicoRepository.findById(id);
 
-        // optional se objeto tecnico nao vim , retorna um nullo
+        //  returna optional se objeto tecnico nao vim , retorna um nullo
         return optional.orElse(null);
     }
 }

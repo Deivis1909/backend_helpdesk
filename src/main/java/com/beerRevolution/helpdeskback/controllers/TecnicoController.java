@@ -1,5 +1,6 @@
 package com.beerRevolution.helpdeskback.controllers;
 
+import com.beerRevolution.helpdeskback.dtos.TecnicoDto;
 import com.beerRevolution.helpdeskback.models.Tecnico;
 import com.beerRevolution.helpdeskback.services.TecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,14 @@ public class TecnicoController {
     // codigo de estatus , corpo da requicao , etc
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tecnico> findById(@PathVariable Integer id){
+    public ResponseEntity<TecnicoDto> findById(@PathVariable Integer id){
 
 
             //  estancia do objeto tecnico recebe tecnico pego pelo id
         Tecnico tecnico = this.tecnicoservice.findById(id);
 
         // .OK.BODY(TECNICO) -> É O OBJETO DE RESPOSTA DO SERVIDOR
-        return ResponseEntity.ok().body(tecnico);
+        return ResponseEntity.ok().body(new TecnicoDto(tecnico));
 
     }
 }
