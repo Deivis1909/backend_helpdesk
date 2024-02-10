@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/tecnicos")
@@ -34,6 +36,17 @@ public class TecnicoController {
         return ResponseEntity.ok().body(new TecnicoDto(tecnico));
 
     }
+
+    @GetMapping
+    public ResponseEntity<List<TecnicoDto>> findAll(){
+      List<Tecnico> tecnicos = tecnicoservice.findAll();
+      List<TecnicoDto> tecnicoDtos = tecnicos.stream().map(obj->new TecnicoDto(obj)).collect(Collectors.toList());
+      return ResponseEntity.ok().body(tecnicoDtos);
+
+    }
+
+
+
     @PostMapping
     public ResponseEntity<TecnicoDto> salvar(@RequestBody TecnicoDto tecnicoDto){
 
