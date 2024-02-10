@@ -92,6 +92,7 @@ public class TecnicoDto implements Serializable {
     //construtor sem parametros
     public TecnicoDto() {
         super();
+        addPerfils(Perfil.CLIENTE);
     }
 
     // construtor com parametros
@@ -103,5 +104,6 @@ public class TecnicoDto implements Serializable {
         this.senha = tecnico.getSenha();
         this.perfils = tecnico.getPerfils().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
         this.dataCriacao = tecnico.getDataCriacao();
+        addPerfils(Perfil.CLIENTE);
     }
 }

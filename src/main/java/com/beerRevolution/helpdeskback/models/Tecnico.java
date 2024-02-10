@@ -1,5 +1,6 @@
 package com.beerRevolution.helpdeskback.models;
 
+import com.beerRevolution.helpdeskback.dtos.TecnicoDto;
 import com.beerRevolution.helpdeskback.enuns.Perfil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
@@ -7,6 +8,7 @@ import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Tecnico extends Pessoa{
@@ -40,4 +42,15 @@ public class Tecnico extends Pessoa{
     public void setChamados(List<Chamado> chamados) {
         this.chamados = chamados;
     }
+    public Tecnico(TecnicoDto tecnico) {
+        super();
+        this.id = tecnico.getId();
+        this.nome = tecnico.getNome();
+        this.cpf = tecnico.getCpf();
+        this.email = tecnico.getEmail();
+        this.senha = tecnico.getSenha();
+        this.perfils = tecnico.getPerfils().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
+        this.dataCriacao = tecnico.getDataCriacao();
+    }
+
 }

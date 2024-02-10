@@ -5,10 +5,10 @@ import com.beerRevolution.helpdeskback.models.Tecnico;
 import com.beerRevolution.helpdeskback.services.TecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/tecnicos")
@@ -32,6 +32,19 @@ public class TecnicoController {
 
         // .OK.BODY(TECNICO) -> É O OBJETO DE RESPOSTA DO SERVIDOR
         return ResponseEntity.ok().body(new TecnicoDto(tecnico));
+
+    }
+    @PostMapping
+    public ResponseEntity<TecnicoDto> salvar(@RequestBody TecnicoDto tecnicoDto){
+
+        tecnicoDto.setId(null);
+        Tecnico tecnico = tecnicoservice.salvar(tecnicoDto);
+
+        //URI -> URL DE ACESSO A ESSE NOVO OBJETO passndo id de tecnico como parametro
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(tecnico.getId()).toUri();
+        return ResponseEntity.created(uri).build();
+
+
 
     }
 }
