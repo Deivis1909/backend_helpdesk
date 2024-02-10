@@ -1,6 +1,7 @@
 package com.beerRevolution.helpdeskback.services;
 
 import com.beerRevolution.helpdeskback.dtos.TecnicoDto;
+import com.beerRevolution.helpdeskback.exceptions.ObjectNotFoundException;
 import com.beerRevolution.helpdeskback.models.Tecnico;
 import com.beerRevolution.helpdeskback.repositories.TecnicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class TecnicoService {
         Optional<Tecnico> optional = tecnicoRepository.findById(id);
 
         //  returna optional se objeto tecnico nao vim , retorna um nullo
-        return optional.orElse(null);
+        return optional.orElseThrow(()-> new ObjectNotFoundException("deu merda , objeto nao encontrado id: "+id));
     }
     public Tecnico salvar(TecnicoDto tecnicoDto){
 
