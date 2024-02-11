@@ -2,6 +2,7 @@ package com.beerRevolution.helpdeskback.dtos;
 
 import com.beerRevolution.helpdeskback.enuns.Perfil;
 import com.beerRevolution.helpdeskback.models.Tecnico;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -13,12 +14,17 @@ public class TecnicoDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     protected Integer id;
+
+    @NotNull(message = "o campo nome é obrigatorio seu ganso")
     protected String nome;
 
+    @NotNull(message="o campo cpf é obrigatorio")
     protected String cpf;
 
+    @NotNull(message="o campo email é obrigatorio")
     protected String email;
 
+    @NotNull(message="o campo senha é obrigatorio")
     protected String senha;
 
     protected Set<Integer> perfils = new HashSet<>();

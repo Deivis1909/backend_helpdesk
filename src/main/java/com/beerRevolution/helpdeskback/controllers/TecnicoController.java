@@ -3,6 +3,7 @@ package com.beerRevolution.helpdeskback.controllers;
 import com.beerRevolution.helpdeskback.dtos.TecnicoDto;
 import com.beerRevolution.helpdeskback.models.Tecnico;
 import com.beerRevolution.helpdeskback.services.TecnicoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,7 @@ public class TecnicoController {
 
 
     @PostMapping
-    public ResponseEntity<TecnicoDto> salvar(@RequestBody TecnicoDto tecnicoDto){
+    public ResponseEntity<TecnicoDto> salvar(@Valid @RequestBody TecnicoDto tecnicoDto){
 
         tecnicoDto.setId(null);
         Tecnico tecnico = tecnicoservice.salvar(tecnicoDto);
@@ -57,6 +58,13 @@ public class TecnicoController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(tecnico.getId()).toUri();
         return ResponseEntity.created(uri).build();
 
+
+
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<TecnicoDto> update(@PathVariable Integer id,@Valid @RequestBody TecnicoDto tecnicoDto){
+        Tecnico tecnico = tecnicoservice.update(id,tecnicoDto);
+        return ResponseEntity.ok().body(new TecnicoDto(tecnico));
 
 
     }

@@ -3,6 +3,7 @@ package com.beerRevolution.helpdeskback.models;
 import com.beerRevolution.helpdeskback.enuns.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -23,14 +24,18 @@ public abstract class Pessoa implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
+
+    @Column(nullable = true)
     protected String nome;
 
-    @Column(unique = true)
+    @CPF
+    @Column(unique = true,nullable = true)
     protected  String cpf;
 
-    @Column(unique = true)
+    @Column(unique = true,nullable = true)
     protected String email;
 
+    @Column(nullable = true)
     protected String senha;
 
 
