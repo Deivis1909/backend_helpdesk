@@ -22,16 +22,15 @@ public class TecnicoService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-    public Tecnico findById(Integer id){
+    public Tecnico findById(Integer id) {
         Optional<Tecnico> optional = tecnicoRepository.findById(id);
 
         //  returna optional se objeto tecnico nao vim , retorna um nullo
-        return optional.orElseThrow(()-> new ObjectNotFoundException("deu merda , objeto nao encontrado id: "+id));
+        return optional.orElseThrow(() -> new ObjectNotFoundException("deu merda , objeto nao encontrado id: " + id));
     }
 
     @Transactional
-    public Tecnico salvar(TecnicoDto tecnicoDto){
-
+    public Tecnico salvar(TecnicoDto tecnicoDto) {
 
 
         Tecnico tecnico = new Tecnico(tecnicoDto);
@@ -46,15 +45,30 @@ public class TecnicoService {
     //verifica se email ou cpf existe no banco
 
 
-    public List<Tecnico> findAll(){
+    public List<Tecnico> findAll() {
 
         return tecnicoRepository.findAll();
 
     }
-    public Tecnico update(Integer id,TecnicoDto tecnicodto){
+
+    public Tecnico update(Integer id, TecnicoDto tecnicodto) {
         tecnicodto.setId(id);
         Tecnico tecnico = findById(id);
         tecnico = new Tecnico(tecnicodto);
         return tecnicoRepository.save(tecnico);
     }
+
+    public void delete(Integer id) throws Exception {
+        Tecnico tecnico = findById(id);
+
+        // se tecnico
+        if (tecnico.getChamados().size() > 0) {
+
+            throw new Exception("deu merda , tecnico possui ordem de serviço / chamadas abertas");
+        }
+            tecnicoRepository.deleteById(id);
+
+
+    }
 }
+

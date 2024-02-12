@@ -68,4 +68,13 @@ public class TecnicoController {
 
 
     }
+
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<TecnicoDto> delete(@PathVariable  Integer id) throws Exception {
+        tecnicoservice.delete(id);
+        return ResponseEntity.noContent().build();
+
+
+    }
 }
