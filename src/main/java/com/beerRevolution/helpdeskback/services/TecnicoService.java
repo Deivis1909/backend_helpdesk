@@ -53,8 +53,12 @@ public class TecnicoService {
 
     public Tecnico update(Integer id, TecnicoDto tecnicodto) {
         tecnicodto.setId(id);
+        // pegando o tecnico do banco pelo id pra atualizar ele
         Tecnico tecnico = findById(id);
+
+        // atualizando o objeto  tecnico do banco pego a cima com tecnico de transporte
         tecnico = new Tecnico(tecnicodto);
+
         return tecnicoRepository.save(tecnico);
     }
 
