@@ -1,6 +1,7 @@
 package com.beerRevolution.helpdeskback.controllers;
 
 import com.beerRevolution.helpdeskback.dtos.ChamadoDto;
+import com.beerRevolution.helpdeskback.dtos.ClienteDto;
 import com.beerRevolution.helpdeskback.models.Chamado;
 import com.beerRevolution.helpdeskback.services.ChamadoService;
 import jakarta.validation.Valid;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -30,6 +33,18 @@ public class ChamadoController {
         Chamado chamado = chamadoService.salvar(chamadodto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(chamado.getId()).toUri();
         return ResponseEntity.created(uri).build();
+
+
+    }
+
+    @GetMapping
+    public ResponseEntity <List<ChamadoDto>> findAll(){
+        List<Chamado> chamados = chamadoService.findAll();
+
+        // transforma a lista de chamados em uma LISTA DE CHAMADOS DTO PARA RETORNAR
+        // USA UM MAP PARA ISSO
+        List<ChamadoDto> chamadoDtos = chamados.stream().map(obj->new ChamadoDto(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(chamadoDtos);
 
 
     }
