@@ -1,7 +1,6 @@
 package com.beerRevolution.helpdeskback.controllers;
 
 import com.beerRevolution.helpdeskback.dtos.ChamadoDto;
-import com.beerRevolution.helpdeskback.dtos.ClienteDto;
 import com.beerRevolution.helpdeskback.models.Chamado;
 import com.beerRevolution.helpdeskback.services.ChamadoService;
 import jakarta.validation.Valid;
@@ -43,9 +42,17 @@ public class ChamadoController {
 
         // transforma a lista de chamados em uma LISTA DE CHAMADOS DTO PARA RETORNAR
         // USA UM MAP PARA ISSO
+        // colect -> coleta itens internos
         List<ChamadoDto> chamadoDtos = chamados.stream().map(obj->new ChamadoDto(obj)).collect(Collectors.toList());
         return ResponseEntity.ok().body(chamadoDtos);
 
+
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ChamadoDto> update(@PathVariable Integer id,@RequestBody ChamadoDto chamadoDto){
+        Chamado chamado = chamadoService.update(id,chamadoDto);
+        return ResponseEntity.ok().body(new ChamadoDto(chamado));
 
     }
 

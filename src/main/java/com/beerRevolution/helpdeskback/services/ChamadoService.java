@@ -11,9 +11,9 @@ import com.beerRevolution.helpdeskback.repositories.ChamadoRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,17 +29,17 @@ public class ChamadoService {
     @Autowired
     private ClienteService clienteService;
 
-    public Chamado findById(Integer id){
+    public Chamado findById(Integer id) {
         Optional<Chamado> chamadoOptional = chamadoRepository.findById(id);
-        return chamadoOptional.orElseThrow(()-> new ObjectNotFoundException("objeto chamado nao encontrado -> id"+id));
+        return chamadoOptional.orElseThrow(() -> new ObjectNotFoundException("objeto chamado nao encontrado -> id" + id));
 
 
     }
 
     @Transactional
-    public Chamado salvar(ChamadoDto chamadoDto){
+    public Chamado salvar(ChamadoDto chamadoDto) {
         //otica diferenete pra chamado
-      //  return chamadoRepository.save( new Chamado(chamadoDto));
+        //  return chamadoRepository.save( new Chamado(chamadoDto));
         return chamadoRepository.save(newChamado(chamadoDto));
 
     }
@@ -47,12 +47,15 @@ public class ChamadoService {
     //FAZENDO UM NOVO CHAMADO / ORDEM DE SERVIÇO
     // RECEBENDO CHAMADODTO COMO PARAMETRO
     // ADD CLIENTE E TECNICO AO CLIENTE
-    private Chamado newChamado(ChamadoDto chamadoDto){
+    private Chamado newChamado(ChamadoDto chamadoDto) {
         Tecnico tecnico = tecnicoService.findById(chamadoDto.getTecnico());
         Cliente cliente = clienteService.findById(chamadoDto.getCliente());
         Chamado chamado = new Chamado();
-        if(chamadoDto.getId() != null){
+        if (chamadoDto.getId() != null) {
             chamado.setId(chamadoDto.getId());
+        }
+        if(chamadoDto.getStatus().equals(2)){
+            chamado.setDataFechamento(LocalDate.now());
         }
         chamado.setTecnico(tecnico);
         chamado.setCliente(cliente);
@@ -66,5 +69,14 @@ public class ChamadoService {
 
     public List<Chamado> findAll() {
         return chamadoRepository.findAll();
+    }
+
+    @Transactional
+    public Chamado update(Integer id, @Valid ChamadoDto chamadoDto) {
+        chamadoDto.setId(id);
+        Chamado chamado = findById(id);
+        chamado = newChamado(chamadoDto);
+        return chamadoRepository.save(chamado);
+
     }
 }
