@@ -1,11 +1,9 @@
 package com.beerRevolution.helpdeskback.controllers;
 
 import com.beerRevolution.helpdeskback.dtos.ClienteDto;
-import com.beerRevolution.helpdeskback.dtos.TecnicoDto;
 import com.beerRevolution.helpdeskback.models.Cliente;
 import com.beerRevolution.helpdeskback.services.ClienteService;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +15,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clientes")
+@CrossOrigin("*")
 public class ClienteController {
 
     @Autowired

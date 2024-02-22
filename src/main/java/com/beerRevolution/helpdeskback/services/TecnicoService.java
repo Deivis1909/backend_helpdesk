@@ -7,6 +7,7 @@ import com.beerRevolution.helpdeskback.models.Tecnico;
 import com.beerRevolution.helpdeskback.repositories.PessoaRepository;
 import com.beerRevolution.helpdeskback.repositories.TecnicoRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +52,9 @@ public class TecnicoService {
 
     }
 
-    public Tecnico update(Integer id, TecnicoDto tecnicodto) {
+
+    @Transactional
+    public Tecnico update(Integer id,@Valid TecnicoDto tecnicodto) {
         tecnicodto.setId(id);
         // pegando o tecnico do banco pelo id pra atualizar ele
         Tecnico tecnico = findById(id);

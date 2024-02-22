@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/tecnicos")
+@CrossOrigin("http://localhost:4200/")
 public class TecnicoController {
 
     // injecao de dependencias do TecnicoService no tecnicoController ->

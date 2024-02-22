@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/chamados")
+@CrossOrigin("*")
 public class ChamadoController {
 
     @Autowired
