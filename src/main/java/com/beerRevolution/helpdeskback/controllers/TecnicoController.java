@@ -5,11 +5,10 @@ import com.beerRevolution.helpdeskback.models.Tecnico;
 import com.beerRevolution.helpdeskback.services.TecnicoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,14 +29,18 @@ public class TecnicoController {
     @GetMapping("/{id}")
     public ResponseEntity<TecnicoDto> findById(@PathVariable Integer id){
 
+       try {
+           //  estancia do objeto tecnico recebe tecnico pego pelo id
+           Tecnico tecnico = this.tecnicoservice.findById(id);
 
-            //  estancia do objeto tecnico recebe tecnico pego pelo id
-        Tecnico tecnico = this.tecnicoservice.findById(id);
-
-        // .OK.BODY(TECNICO) -> É O OBJETO DE RESPOSTA DO SERVIDOR
-        return ResponseEntity.ok().body(new TecnicoDto(tecnico));
-
+           // .OK.BODY(TECNICO) -> É O OBJETO DE RESPOSTA DO SERVIDOR
+           return ResponseEntity.ok().body(new TecnicoDto(tecnico));
+       } catch (Exception ex) {
+           // Outras exceções genéricas
+           return ResponseEntity.status(500).build();
+       }
     }
+
 
     @GetMapping
     public ResponseEntity<List<TecnicoDto>> findAll(){
@@ -50,18 +53,25 @@ public class TecnicoController {
 
 
     @PostMapping
-    public ResponseEntity<TecnicoDto> salvar(@Valid @RequestBody TecnicoDto tecnicoDto){
+    public ResponseEntity<Tecnico> salvar(@Valid @RequestBody TecnicoDto tecnicoDto){
 
         tecnicoDto.setId(null);
         Tecnico tecnico = tecnicoservice.salvar(tecnicoDto);
 
-        //URI -> URL DE ACESSO A ESSE NOVO OBJETO passndo id de tecnico como parametro
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(tecnico.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(tecnico);
+
+
 
 
 
     }
+
+    //@PostMapping
+    //    public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
+    //        Usuario user = usuarioService.salvar(usuario);
+    //        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    //    }
+
     @PutMapping("/{id}")
     public ResponseEntity<TecnicoDto> update(@PathVariable Integer id,@Valid @RequestBody TecnicoDto tecnicoDto){
         Tecnico tecnico = tecnicoservice.update(id,tecnicoDto);

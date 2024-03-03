@@ -5,11 +5,10 @@ import com.beerRevolution.helpdeskback.models.Cliente;
 import com.beerRevolution.helpdeskback.services.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,17 +21,19 @@ public class ClienteController {
     ClienteService clienteService;
 
     @PostMapping
-    public ResponseEntity<ClienteDto> salvar(@Valid @RequestBody ClienteDto clienteDto){
+    public ResponseEntity<Cliente> salvar(@Valid @RequestBody ClienteDto clienteDto){
         clienteDto.setId(null);
         // objeto de cliente recebe o CLIENTEDTO DE TRANSPORTE
         Cliente cliente = clienteService.salvar(clienteDto);
 
         //URI -> URL DE ACESSO A ESSE NOVO OBJETO passndo id de tecnico como parametro
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
-        return ResponseEntity.created(uri).build();
-
+      //  URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
+        //return ResponseEntity.created(uri).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
 
     }
+
+
 
     @GetMapping
     public ResponseEntity<List<ClienteDto>>  findAll(){

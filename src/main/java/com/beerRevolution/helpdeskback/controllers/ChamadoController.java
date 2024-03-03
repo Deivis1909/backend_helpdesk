@@ -5,6 +5,7 @@ import com.beerRevolution.helpdeskback.models.Chamado;
 import com.beerRevolution.helpdeskback.services.ChamadoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -29,13 +30,18 @@ public class ChamadoController {
 
     }
     @PostMapping
-    public ResponseEntity<ChamadoDto> salvar(@Valid @RequestBody ChamadoDto chamadodto){
+    public ResponseEntity<Chamado> salvar(@Valid @RequestBody ChamadoDto chamadodto){
         Chamado chamado = chamadoService.salvar(chamadodto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(chamado.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(chamado);
+
+        //return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
 
 
     }
+
+
+
 
     @GetMapping
     public ResponseEntity <List<ChamadoDto>> findAll(){
