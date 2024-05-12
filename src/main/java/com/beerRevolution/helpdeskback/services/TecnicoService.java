@@ -24,10 +24,10 @@ public class TecnicoService {
     private PessoaRepository pessoaRepository;
 
     public Tecnico findById(Integer id) {
-        Optional<Tecnico> optional = tecnicoRepository.findById(id);
+        Optional<Tecnico> tecnicooptional = tecnicoRepository.findById(id);
 
         //  returna optional se objeto tecnico nao vim , retorna um nullo
-        return optional.orElseThrow(() -> new ObjectNotFoundException("deu merda , objeto nao encontrado id: " + id));
+        return tecnicooptional.orElseThrow(() -> new ObjectNotFoundException("deu merda , objeto nao encontrado id: " + id));
     }
 
     @Transactional

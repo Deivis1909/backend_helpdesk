@@ -27,9 +27,11 @@ public class TecnicoDto implements Serializable {
     @NotNull(message="o campo senha é obrigatorio")
     protected String senha;
 
+    protected LocalDate dataCriacao = LocalDate.now();
+
     protected Set<Integer> perfils = new HashSet<>();
 
-    protected LocalDate dataCriacao = LocalDate.now();
+
 
 
     public Integer getId() {
