@@ -1,9 +1,18 @@
-FROM maven:3.9.2-amazoncorretto-17 as build
-WORKDIR /app
-COPY . .
-RUN mvn clean package -X -DskipTests
+FROM ubuntu:latest as build
 
-FROM openjdk:17-alpine
-WORKDIR /app
-COPY --from=build ./app/target/*.jar ./testes_basicos.jar
-ENTRYPOINT java -jar testes_basicos.jar
+RUN apt-get update
+RUN apt-get install open-jdk-17 -y
+COPY . .
+
+RUN apt-get install maven -y
+RUN mvn clean install
+
+FROM openjdk:17-jdk-slim
+
+EXPOSE 8090
+
+COPY --from=build /target/helpdesk-back-0.0.1-SNAPSHOT.jar app.jar
+
+ENTRYPOINT["java", "-jar", "app.jar"]
+
+
