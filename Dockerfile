@@ -13,6 +13,6 @@ EXPOSE 8090
 
 COPY --from=build /target/helpdesk-back-0.0.1-SNAPSHOT.jar app.jar
 
-ENTRYPOINT["java", "-jar", "app.jar"]
+ENTRYPOINT [ "java", "-jar", "app.jar" ]
 
 
